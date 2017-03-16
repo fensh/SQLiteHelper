@@ -1,4 +1,4 @@
-﻿namespace SQLiteHelper
+﻿namespace System.Data.SQLite
 {
     public class SQLiteColumn
     {
@@ -8,6 +8,8 @@
         public bool AutoIncrement = false;
         public bool NotNull = false;
         public string DefaultValue = "";
+
+        public SQLiteForeignKey ForeignKey = null;
 
         public SQLiteColumn()
         { }
@@ -46,6 +48,15 @@
             }
         }
 
+        public SQLiteColumn(string colName, ColType colDataType, bool notNull)
+        {
+            ColumnName = colName;
+            PrimaryKey = false;
+            ColDataType = colDataType;
+            AutoIncrement = false;
+            NotNull = notNull;
+        }
+
         public SQLiteColumn(string colName, ColType colDataType, bool primaryKey, bool autoIncrement, bool notNull, string defaultValue)
         {
             ColumnName = colName;
@@ -64,6 +75,17 @@
                 NotNull = notNull;
                 DefaultValue = defaultValue;
             }
+        }
+
+        public SQLiteColumn AddForeignKey(SQLiteForeignKey foreignKey)
+        {
+            ForeignKey = foreignKey;
+            return this;
+        }
+
+        public SQLiteColumn AddForeignKey(string parentTable, string parentColumn, OnChangeAction onDelete, OnChangeAction onUpdate = OnChangeAction.NoActiaon)
+        {
+            return AddForeignKey(new SQLiteForeignKey(parentTable, parentColumn, onDelete, onUpdate));
         }
     }
 }

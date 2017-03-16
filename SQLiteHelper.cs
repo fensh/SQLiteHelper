@@ -1,16 +1,10 @@
-﻿// Version 1.2
-// Date: 2014-03-27
-// http://sh.codeplex.com
-// Dedicated to Public Domain
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
-using System.Text;
-
-namespace SQLiteHelper
+﻿namespace System.Data.SQLite
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+
     public enum ColType
     {
         Text,
@@ -356,7 +350,7 @@ namespace SQLiteHelper
 
         public void CreateTable(SQLiteTable table)
         {
-            StringBuilder sb = new System.Text.StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.Append("create table if not exists `");
             sb.Append(table.TableName);
             sb.AppendLine("`(");
@@ -416,6 +410,42 @@ namespace SQLiteHelper
                     else
                     {
                         sb.Append(col.DefaultValue);
+                    }
+                }
+
+                if (col.ForeignKey != null)
+                {
+                    sb.Append(" references ");
+                    sb.Append(col.ForeignKey.ParentTableName + '(' + col.ForeignKey.ParentColumnName + ')');
+                    if (col.ForeignKey.OnDelete != OnChangeAction.NoActiaon)
+                    {
+                        sb.Append(" on delete ");
+                        switch (col.ForeignKey.OnDelete)
+                        {
+                            case OnChangeAction.Cascade:
+                                sb.Append("cascade"); break;
+                            case OnChangeAction.Restrict:
+                                sb.Append("restrict"); break;
+                            case OnChangeAction.SetDefault:
+                                sb.Append("set default"); break;
+                            case OnChangeAction.SetNull:
+                                sb.Append("set null"); break;
+                        }
+                    }
+                    if (col.ForeignKey.OnUpdate != OnChangeAction.NoActiaon)
+                    {
+                        sb.Append(" on update ");
+                        switch (col.ForeignKey.OnUpdate)
+                        {
+                            case OnChangeAction.Cascade:
+                                sb.Append("cascade"); break;
+                            case OnChangeAction.Restrict:
+                                sb.Append("restrict"); break;
+                            case OnChangeAction.SetDefault:
+                                sb.Append("set default"); break;
+                            case OnChangeAction.SetNull:
+                                sb.Append("set null"); break;
+                        }
                     }
                 }
             }

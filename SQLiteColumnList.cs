@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SQLiteHelper
+﻿namespace System.Data.SQLite
 {
+    using System;
+    using Collections.Generic;
 
     public class SQLiteColumnList : IList<SQLiteColumn>
     {

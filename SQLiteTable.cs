@@ -1,4 +1,4 @@
-﻿namespace SQLiteHelper
+﻿namespace System.Data.SQLite
 {
     public class SQLiteTable
     {
